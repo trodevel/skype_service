@@ -1,0 +1,15 @@
+
+* required libraries
+
+3rd party:
+
+- dbus
+- boost 1.53 (for assertion)
+
+sudo apt-get install dbus libdbus-1-dev 
+
+own:
+
+- skype_io
+- utils (logger)
+- threcon (optionally)

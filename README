@@ -1,0 +1,60 @@
+* tested on Ubuntu 12.04 and Skype 4.2.0.11, 4.3.0.37
+* tested on Ubuntu Server 14.04.1 and Skype 4.3.0.37
+
+* sample output
+
+$ DISPLAY=:0 ./example
+DEBUG|SkypeService: init()
+DEBUG|SkypeLowIo: init()
+type exit or quit to quit: TRACE|SkypeLowIo: SkypeLowIoImpl::thread_func: started
+
+your command: EventGen::handle: :1.1980
+got event 1
+EventGen::handle: OK
+got event 1
+EventGen::handle: PROTOCOL 5
+got event 1
+EventGen::handle: CONNSTATUS ONLINE
+got event 3
+EventGen::handle: CURRENTUSERHANDLE johndoe55
+got event 5
+EventGen::handle: USERSTATUS ONLINE
+got event 4
+call echo123
+command: call echo123
+your command: EventGen::handle: CALL 81709 STATUS UNPLACED
+got event 9
+EventGen::handle: CALL 81709 STATUS ROUTING
+got event 9
+EventGen::handle: CALL 81709 STATUS ROUTING
+got event 9
+EventGen::handle: CALL 81709 STATUS RINGING
+got event 9
+EventGen::handle: CALL 81709 STATUS INPROGRESS
+got event 9
+EventGen::handle: CALL 81709 DURATION 0
+got event 8
+EventGen::handle: CALL 81709 VIDEO_STATUS VIDEO_RECV_ENABLED
+got event 1
+EventGen::handle: CALL 81709 DURATION 1
+got event 8
+EventGen::handle: CALL 81709 DURATION 2
+got event 8
+EventGen::handle: CALL 81709 DURATION 3
+got event 8
+...
+EventGen::handle: CALL 81709 STATUS FINISHED
+got event 9
+EventGen::handle: CALL 81709 DURATION 5
+got event 8
+exit
+command: exit
+exiting ...
+DEBUG|SkypeService: shutdown()
+DEBUG|SkypeLowIo: shutdown()
+TRACE|SkypeLowIo: shutdown__()
+TRACE|SkypeLowIo: SkypeLowIoImpl::thread_func: exit
+Done! =)
+DEBUG|SkypeService: ~SkypeService()
+DEBUG|SkypeLowIo: ~SkypeLowIoImpl()
+$
