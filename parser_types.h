@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 1807 $ $Date:: 2015-06-02 #$ $Author: serge $
 
 #ifndef PARSER_TYPES_H
 #define PARSER_TYPES_H
@@ -38,6 +38,7 @@ enum class conn_status_e
     OFFLINE,
     CONNECTING,
     ONLINE,
+    NA
 };
 
 enum class user_status_e

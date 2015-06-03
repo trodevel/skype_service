@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 1807 $ $Date:: 2015-06-02 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -42,10 +42,11 @@ std::string StrHelper::to_string( conn_status_e l )
         MAP_INSERT_VAL( m, conn_status_e:: TUPLE_VAL_STR( OFFLINE ) );
         MAP_INSERT_VAL( m, conn_status_e:: TUPLE_VAL_STR( CONNECTING ) );
         MAP_INSERT_VAL( m, conn_status_e:: TUPLE_VAL_STR( ONLINE ) );
+        MAP_INSERT_VAL( m, conn_status_e:: TUPLE_VAL_STR( NA ) );
     }
 
     if( 0 == m.count( l ) )
-        return "UNDEF";
+        return "?";
 
     return m[l];
 }
@@ -66,7 +67,7 @@ std::string StrHelper::to_string( user_status_e l )
     }
 
     if( 0 == m.count( l ) )
-        return "UNDEF";
+        return "?";
 
     return m[l];
 }
@@ -103,7 +104,7 @@ std::string to_string( call_status_e l )
     }
 
     if( 0 == m.count( l ) )
-        return "UNDEF";
+        return "?";
 
     return m[l];
 }

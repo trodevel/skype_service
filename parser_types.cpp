@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 1807 $ $Date:: 2015-06-02 #$ $Author: serge $
 
 #include "parser_types.h"     // self
 
@@ -46,6 +46,7 @@ conn_status_e to_conn_status( const std::string & s )
         insert_inverse_pair( m, conn_status_e:: TUPLE_VAL_STR( OFFLINE ) );
         insert_inverse_pair( m, conn_status_e:: TUPLE_VAL_STR( CONNECTING ) );
         insert_inverse_pair( m, conn_status_e:: TUPLE_VAL_STR( ONLINE ) );
+        insert_inverse_pair( m, conn_status_e:: TUPLE_VAL_STR( NA ) );
     }
 
     if( 0 == m.count( s ) )
