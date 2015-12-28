@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3058 $ $Date:: 2015-12-24 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -48,6 +48,7 @@ NAMESPACE_SKYPE_SERVICE_START
 #define KEYW_VAA_INPUT_STATUS       "VAA_INPUT_STATUS"
 #define KEYW_TRUE                   "TRUE"
 #define KEYW_FALSE                  "FALSE"
+#define KEYW_USER                   "USER"
 
 Event* EventParser::to_event( const std::string & s )
 {
@@ -156,6 +157,10 @@ Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, 
     else if( keyw == KEYW_CHATMEMBER )
     {
         return handle_chatmember( toks, hash_id );
+    }
+    else if( keyw == KEYW_USER )
+    {
+        return handle_user( toks, hash_id );
     }
     else if( keyw == KEYW_ALTER )
     {
@@ -323,6 +328,11 @@ Event* EventParser::handle_chat( const std::vector< std::string > & toks, uint32
 Event* EventParser::handle_chatmember( const std::vector< std::string > & toks, uint32_t hash_id )
 {
     return new Event( Event::CHATMEMBER, hash_id );
+}
+
+Event* EventParser::handle_user( const std::vector< std::string > & toks, uint32_t hash_id )
+{
+    return new Event( Event::USER, hash_id );
 }
 
 NAMESPACE_SKYPE_SERVICE_END

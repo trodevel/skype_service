@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3058 $ $Date:: 2015-12-24 #$ $Author: serge $
 
 #ifndef EVENT_H
 #define EVENT_H
@@ -56,6 +56,7 @@ public:
         ALTER_CALL_SET_OUTPUT_PORT,
         ALTER_CALL_SET_OUTPUT_FILE,
         CALL_VAA_INPUT_STATUS,
+        USER
     };
 
 public:

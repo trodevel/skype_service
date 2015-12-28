@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1807 $ $Date:: 2015-06-02 #$ $Author: serge $
+// $Revision: 3058 $ $Date:: 2015-12-24 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -136,6 +136,7 @@ const std::string & StrHelper::to_string( Event::type_e l )
         MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_PORT ) );
         MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_FILE ) );
         MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_VAA_INPUT_STATUS ) );
+        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( USER ) );
     }
 
     static const std::string q( "?" );

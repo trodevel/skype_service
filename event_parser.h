@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3058 $ $Date:: 2015-12-24 #$ $Author: serge $
 
 #ifndef EVENT_PARSER_H
 #define EVENT_PARSER_H
@@ -64,6 +64,7 @@ private:
     static Event* handle_alter_call( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_chat( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_chatmember( const std::vector< std::string > & toks, uint32_t hash_id );
+    static Event* handle_user( const std::vector< std::string > & toks, uint32_t hash_id );
 };
 
 NAMESPACE_SKYPE_SERVICE_END
