@@ -19,10 +19,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1804 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3192 $ $Date:: 2016-01-15 #$ $Author: serge $
 
 #include <thread>           // std::thread
 #include <functional>       // std::bind
+#include <sstream>          // std::stringstream
 #include <iostream>         // cout
 
 #include "../utils/dummy_logger.h"      // dummy_log_set_log_level
@@ -64,21 +65,70 @@ public:
 
             std::cout << "command: " << input << std::endl;
 
-            if( input == "exit" || input == "quit" )
-                break;
-
-            bool b = serv_->send_raw( input );
+            bool b = process_input( input );
 
             if( b == false )
-            {
-                std::cout << "ERROR: cannot process command '" << input << "'" << std::endl;
-            }
-
+                break;
         };
 
         std::cout << "exiting ..." << std::endl;
 
         serv_->shutdown();
+    }
+private:
+    bool process_input( const std::string & input )
+    {
+        std::string cmd;
+
+        std::stringstream stream( input );
+
+        if( stream >> cmd )
+        {
+            if( cmd == "exit" || cmd == "quit" )
+            {
+                return false;
+            }
+            else if( cmd == "po" )
+            {
+                uint32_t call_id;
+                uint32_t port;
+                stream >> call_id >> port;
+
+                bool b = serv_->alter_call_set_output_port( call_id, port );
+
+                if( b == false )
+                {
+                    std::cout << "ERROR: cannot process command '" << input << "'" << std::endl;
+                }
+            }
+            else if( cmd == "drop" )
+            {
+                uint32_t call_id;
+                uint32_t port;
+                stream >> call_id >> port;
+
+                bool b = serv_->set_call_status( call_id, skype_service::call_status_e::FINISHED );
+
+                if( b == false )
+                {
+                    std::cout << "ERROR: cannot process command '" << input << "'" << std::endl;
+                }
+            }
+            else
+            {
+                bool b = serv_->send_raw( input );
+
+                if( b == false )
+                {
+                    std::cout << "ERROR: cannot process command '" << input << "'" << std::endl;
+                }
+            }
+        }
+        else
+        {
+            std::cout << "ERROR: cannot read command" << std::endl;
+        }
+        return true;
     }
 
 private:
