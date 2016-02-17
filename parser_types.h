@@ -19,14 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1807 $ $Date:: 2015-06-02 #$ $Author: serge $
+// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
 
 #ifndef PARSER_TYPES_H
 #define PARSER_TYPES_H
 
 #include "namespace_lib.h"          // NAMESPACE_SKYPE_SERVICE_START
-
-#include "../utils/types.h"         // uint32
 
 #include <string>
 

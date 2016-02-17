@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3058 $ $Date:: 2015-12-24 #$ $Author: serge $
+// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -212,7 +212,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
     if( toks[1].empty() )
         throw WrongFormat( "CALL_ID is not defined" );
 
-    uint32 call_id = std::stoul( toks[1] );
+    uint32_t call_id = std::stoul( toks[1] );
 
     const std::string keyw2 = toks[2];
 
@@ -221,7 +221,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         if( toks[3].empty() )
             throw WrongFormat( "DURATION is empty" );
 
-        uint32 dur = std::stoul( toks[3] );
+        uint32_t dur = std::stoul( toks[3] );
 
         return new CallDurationEvent( call_id, dur, hash_id );
     }
@@ -239,7 +239,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         if( toks[3].empty() )
             throw WrongFormat( "PSTN_STATUS is empty" );
 
-        uint32 error = std::stoul( toks[3] );
+        uint32_t error = std::stoul( toks[3] );
 
         std::string descr;
 
@@ -256,7 +256,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         if( toks[3] != KEYW_TRUE && toks[3] != KEYW_FALSE )
             throw WrongFormat( "VAA_INPUT_STATUS should be TRUE or FALSE" );
 
-        uint32 s = ( toks[3] == KEYW_TRUE ) ? 1 : 0;
+        uint32_t s = ( toks[3] == KEYW_TRUE ) ? 1 : 0;
 
         return new CallVaaInputStatusEvent( call_id, s, hash_id );
     }
@@ -265,7 +265,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         if( toks[3].empty() )
             throw WrongFormat( "FAILUREREASON is empty" );
 
-        uint32 c = std::stoul( toks[3] );
+        uint32_t c = std::stoul( toks[3] );
 
         return new CallFailureReasonEvent( call_id, c, hash_id );
     }
@@ -278,7 +278,7 @@ Event* EventParser::handle_error( const std::vector< std::string > & toks, uint3
     if( toks.size() < 2 )
         throw WrongFormat( "expected at least 2 token(s)" );
 
-    uint32 error = std::stoul( toks[1] );
+    uint32_t error = std::stoul( toks[1] );
 
     std::string descr;
 
@@ -297,7 +297,7 @@ Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, 
     if( toks[2].empty() )
         throw WrongFormat( "CALL_ID is not defined" );
 
-    uint32 call_id = std::stoul( toks[2] );
+    uint32_t call_id = std::stoul( toks[2] );
 
     std::vector< std::string > pars;
     tokenize_to_vector( pars, toks[4], "=" );

@@ -19,16 +19,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1804 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
 
 #ifndef SKYPE_SERVICE_H
 #define SKYPE_SERVICE_H
 
 #include <string>                   // std::string
 #include <mutex>                    // std::mutex
+#include <cstdint>                  // uint32_t
 
 #include "../threcon/i_controllable.h"  // IControllable
-#include "../utils/types.h"             // uint32
 #include "../skype_io/skype_low_io.h"   // SkypeLowIo
 
 #include "namespace_lib.h"          // NAMESPACE_SKYPE_SERVICE_START
@@ -56,18 +56,18 @@ public:
     bool send_raw( const std::string & s );
 
     // Skype interface
-    bool call( const std::string & s, uint32 hash_id = 0 );
-    bool get_call_property( uint32 id, const std::string & s, uint32 hash_id = 0 );
-    bool set_call_status( uint32 id, call_status_e s, uint32 hash_id = 0 );
-    bool alter_call_hangup( uint32 id, uint32 hash_id = 0 );
-    bool alter_call_set_input_soundcard( uint32 id, uint32 hash_id = 0 );
-    bool alter_call_set_input_port( uint32 id, uint32 p, uint32 hash_id = 0 );
-    bool alter_call_set_input_file( uint32 id, const std::string & s, uint32 hash_id = 0 );
-    bool alter_call_set_output_soundcard( uint32 id, uint32 hash_id = 0 );
-    bool alter_call_set_output_port( uint32 id, uint32 p, uint32 hash_id = 0 );
-    bool alter_call_set_output_file( uint32 id, const std::string & s, uint32 hash_id = 0 );
-    bool alter_call_set_capture_mic_port( uint32 id, uint32 p, uint32 hash_id = 0 );
-    bool alter_call_set_capture_mic_file( uint32 id, const std::string & s, uint32 hash_id = 0 );
+    bool call( const std::string & s, uint32_t hash_id = 0 );
+    bool get_call_property( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
+    bool set_call_status( uint32_t id, call_status_e s, uint32_t hash_id = 0 );
+    bool alter_call_hangup( uint32_t id, uint32_t hash_id = 0 );
+    bool alter_call_set_input_soundcard( uint32_t id, uint32_t hash_id = 0 );
+    bool alter_call_set_input_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
+    bool alter_call_set_input_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
+    bool alter_call_set_output_soundcard( uint32_t id, uint32_t hash_id = 0 );
+    bool alter_call_set_output_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
+    bool alter_call_set_output_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
+    bool alter_call_set_capture_mic_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
+    bool alter_call_set_capture_mic_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
 
     std::string get_error_msg() const;
 

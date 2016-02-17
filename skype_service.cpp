@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1804 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
 
 #include "skype_service.h"          // self
 
@@ -103,7 +103,7 @@ bool SkypeService::register_callback( ICallback * eh )
 }
 
 // Skype interface
-bool SkypeService::call( const std::string & s, uint32 hash_id )
+bool SkypeService::call( const std::string & s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::call( s, hash_id );
 
@@ -111,7 +111,7 @@ bool SkypeService::call( const std::string & s, uint32 hash_id )
 
     return sio_.send( cmd );
 }
-bool SkypeService::get_call_property( uint32 id, const std::string & s, uint32 hash_id )
+bool SkypeService::get_call_property( uint32_t id, const std::string & s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::get_call_property( id, s, hash_id );
 
@@ -119,7 +119,7 @@ bool SkypeService::get_call_property( uint32 id, const std::string & s, uint32 h
 
     return sio_.send( cmd );
 }
-bool SkypeService::set_call_status( uint32 id, call_status_e s, uint32 hash_id )
+bool SkypeService::set_call_status( uint32_t id, call_status_e s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::set_call_status( id, s, hash_id );
 
@@ -127,7 +127,7 @@ bool SkypeService::set_call_status( uint32 id, call_status_e s, uint32 hash_id )
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_hangup( uint32 id, uint32 hash_id )
+bool SkypeService::alter_call_hangup( uint32_t id, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_hangup( id, hash_id );
 
@@ -135,7 +135,7 @@ bool SkypeService::alter_call_hangup( uint32 id, uint32 hash_id )
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_input_soundcard( uint32 id, uint32 hash_id )
+bool SkypeService::alter_call_set_input_soundcard( uint32_t id, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_input_soundcard( id, hash_id );
 
@@ -143,7 +143,7 @@ bool SkypeService::alter_call_set_input_soundcard( uint32 id, uint32 hash_id )
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_input_port( uint32 id, uint32 p, uint32 hash_id )
+bool SkypeService::alter_call_set_input_port( uint32_t id, uint32_t p, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_input_port( id, p, hash_id );
 
@@ -151,7 +151,7 @@ bool SkypeService::alter_call_set_input_port( uint32 id, uint32 p, uint32 hash_i
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_input_file( uint32 id, const std::string & s, uint32 hash_id )
+bool SkypeService::alter_call_set_input_file( uint32_t id, const std::string & s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_input_file( id, s, hash_id );
 
@@ -159,7 +159,7 @@ bool SkypeService::alter_call_set_input_file( uint32 id, const std::string & s, 
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_output_soundcard( uint32 id, uint32 hash_id )
+bool SkypeService::alter_call_set_output_soundcard( uint32_t id, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_output_soundcard( id, hash_id );
 
@@ -167,7 +167,7 @@ bool SkypeService::alter_call_set_output_soundcard( uint32 id, uint32 hash_id )
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_output_port( uint32 id, uint32 p, uint32 hash_id )
+bool SkypeService::alter_call_set_output_port( uint32_t id, uint32_t p, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_output_port( id, p, hash_id );
 
@@ -175,7 +175,7 @@ bool SkypeService::alter_call_set_output_port( uint32 id, uint32 p, uint32 hash_
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_output_file( uint32 id, const std::string & s, uint32 hash_id )
+bool SkypeService::alter_call_set_output_file( uint32_t id, const std::string & s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_output_file( id, s, hash_id );
 
@@ -183,7 +183,7 @@ bool SkypeService::alter_call_set_output_file( uint32 id, const std::string & s,
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_capture_mic_port( uint32 id, uint32 p, uint32 hash_id )
+bool SkypeService::alter_call_set_capture_mic_port( uint32_t id, uint32_t p, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_capture_mic_port( id, p, hash_id );
 
@@ -191,7 +191,7 @@ bool SkypeService::alter_call_set_capture_mic_port( uint32 id, uint32 p, uint32 
 
     return sio_.send( cmd );
 }
-bool SkypeService::alter_call_set_capture_mic_file( uint32 id, const std::string & s, uint32 hash_id )
+bool SkypeService::alter_call_set_capture_mic_file( uint32_t id, const std::string & s, uint32_t hash_id )
 {
     std::string cmd = CommandGen::alter_call_set_capture_mic_file( id, s, hash_id );
 

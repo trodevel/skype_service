@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3192 $ $Date:: 2016-01-15 #$ $Author: serge $
+// $Revision: 3198 $ $Date:: 2016-01-18 #$ $Author: serge $
 
 #include <thread>           // std::thread
 #include <functional>       // std::bind

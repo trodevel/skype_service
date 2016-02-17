@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
 
 #ifndef EVENTS_H
 #define EVENTS_H
@@ -55,18 +55,18 @@ class EventDataInt
 {
 public:
     EventDataInt(
-        uint32              par_int ):
+        uint32_t              par_int ):
             par_int_( par_int )
     {
     }
 
-    uint32 get_par_int() const
+    uint32_t get_par_int() const
     {
         return par_int_;
     }
 
 private:
-    uint32          par_int_;
+    uint32_t          par_int_;
 };
 
 
@@ -79,21 +79,21 @@ public:
 
     BasicCallEvent(
         Event::type_e       type,
-        uint32              call_id,
+        uint32_t              call_id,
         uint32_t            hash_id ):
             Event( type, hash_id ),
             call_id_( call_id )
     {
     }
 
-    uint32 get_call_id() const
+    uint32_t get_call_id() const
     {
         return call_id_;
     }
 
 private:
 
-    uint32          call_id_;
+    uint32_t          call_id_;
 };
 
 class BasicCallParamEvent: public BasicCallEvent, public EventDataInt
@@ -101,8 +101,8 @@ class BasicCallParamEvent: public BasicCallEvent, public EventDataInt
 public:
     BasicCallParamEvent(
         Event::type_e       type,
-        uint32              call_id,
-        uint32              par_int,
+        uint32_t              call_id,
+        uint32_t              par_int,
         uint32_t            hash_id ):
             BasicCallEvent( type, call_id, hash_id ),
             EventDataInt( par_int )
@@ -115,7 +115,7 @@ class BasicCallParamStrEvent: public BasicCallEvent, public EventDataStr
 public:
     BasicCallParamStrEvent(
         Event::type_e       type,
-        uint32              call_id,
+        uint32_t              call_id,
         const std::string   & par_str,
         uint32_t            hash_id ):
             BasicCallEvent( type, call_id, hash_id ),
@@ -131,7 +131,7 @@ class BasicParamEvent: public Event, public EventDataInt
 public:
     BasicParamEvent(
         Event::type_e       type,
-        uint32              par_int,
+        uint32_t              par_int,
         uint32_t            hash_id ):
             Event( type, hash_id ),
             EventDataInt( par_int )
@@ -158,7 +158,7 @@ class ErrorEvent: public BasicParamEvent, public EventDataStr
 {
 public:
     ErrorEvent(
-        uint32              par_int,
+        uint32_t              par_int,
         const std::string   & par_str,
         uint32_t            hash_id ):
             BasicParamEvent( Event::ERROR, par_int, hash_id ),
@@ -248,7 +248,7 @@ class CallEvent: public BasicCallEvent
 public:
 
     CallEvent(
-        uint32              call_id,
+        uint32_t              call_id,
         uint32_t            hash_id ):
             BasicCallEvent( Event::CALL, call_id, hash_id )
     {
@@ -259,8 +259,8 @@ class CallDurationEvent: public BasicCallParamEvent
 {
 public:
     CallDurationEvent(
-        uint32              call_id,
-        uint32              par_int,
+        uint32_t              call_id,
+        uint32_t              par_int,
         uint32_t            hash_id ):
             BasicCallParamEvent( Event::CALL_DURATION, call_id, par_int, hash_id )
     {
@@ -271,7 +271,7 @@ class CallStatusEvent: public BasicCallEvent
 {
 public:
     CallStatusEvent(
-        uint32              call_id,
+        uint32_t              call_id,
         call_status_e       call_s,
         uint32_t            hash_id ):
             BasicCallEvent( Event::CALL_STATUS, call_id, hash_id ),
@@ -293,8 +293,8 @@ class CallPstnStatusEvent: public BasicCallParamEvent, public EventDataStr
 {
 public:
     CallPstnStatusEvent(
-        uint32              call_id,
-        uint32              errorcode,
+        uint32_t              call_id,
+        uint32_t              errorcode,
         const std::string   & descr,
         uint32_t            hash_id ):
             BasicCallParamEvent( Event::CALL_PSTN_STATUS, call_id, errorcode, hash_id ),
@@ -307,8 +307,8 @@ class CallFailureReasonEvent: public BasicCallParamEvent
 {
 public:
     CallFailureReasonEvent(
-            uint32              call_id,
-            uint32              par_int,
+            uint32_t              call_id,
+            uint32_t              par_int,
             uint32_t            hash_id ):
                 BasicCallParamEvent( Event::CALL_FAILUREREASON, call_id, par_int, hash_id )
     {
@@ -319,8 +319,8 @@ class CallVaaInputStatusEvent: public BasicCallParamEvent
 {
 public:
     CallVaaInputStatusEvent(
-            uint32              call_id,
-            uint32              par_int,
+            uint32_t              call_id,
+            uint32_t              par_int,
             uint32_t            hash_id ):
                 BasicCallParamEvent( Event::CALL_VAA_INPUT_STATUS, call_id, par_int, hash_id )
     {
