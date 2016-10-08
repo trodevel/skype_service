@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3198 $ $Date:: 2016-01-18 #$ $Author: serge $
+// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
 
 #ifndef EVENT_PARSER_H
 #define EVENT_PARSER_H
@@ -61,6 +61,7 @@ private:
     static Event* handle_currentuserhandle( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_error( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_call( const std::vector< std::string > & toks, uint32_t hash_id );
+    static Event* handle_voicemail( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_alter_call( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_chat( const std::vector< std::string > & toks, uint32_t hash_id );
     static Event* handle_chatmember( const std::vector< std::string > & toks, uint32_t hash_id );

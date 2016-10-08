@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
+// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -34,6 +34,7 @@ NAMESPACE_SKYPE_SERVICE_START
 #define KEYW_CURRENTUSERHANDLE      "CURRENTUSERHANDLE"
 #define KEYW_USERSTATUS             "USERSTATUS"
 #define KEYW_CALL                   "CALL"
+#define KEYW_VOICEMAIL              "VOICEMAIL"
 #define KEYW_CHAT                   "CHAT"
 #define KEYW_CHATMEMBER             "CHATMEMBER"
 #define KEYW_DURATION               "DURATION"
@@ -145,6 +146,10 @@ Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, 
     else if( keyw == KEYW_CALL )
     {
         return handle_call( toks, hash_id );
+    }
+    else if( keyw == KEYW_VOICEMAIL )
+    {
+        return handle_voicemail( toks, hash_id );
     }
     else if( keyw == KEYW_ERROR )
     {
@@ -268,6 +273,31 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         uint32_t c = std::stoul( toks[3] );
 
         return new CallFailureReasonEvent( call_id, c, hash_id );
+    }
+
+    return new BasicParamStrEvent( Event::UNKNOWN, keyw2, hash_id );
+}
+
+Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, uint32_t hash_id )
+{
+    if( toks.size() < 3 )
+        throw WrongFormat( "expected at least 3 token(s)" );
+
+    if( toks[1].empty() )
+        throw WrongFormat( "CALL_ID is not defined" );
+
+    uint32_t call_id = std::stoul( toks[1] );
+
+    const std::string keyw2 = toks[2];
+
+    if( keyw2 == KEYW_DURATION )
+    {
+        if( toks[3].empty() )
+            throw WrongFormat( "DURATION is empty" );
+
+        uint32_t dur = std::stoul( toks[3] );
+
+        return new VoicemailDurationEvent( call_id, dur, hash_id );
     }
 
     return new BasicParamStrEvent( Event::UNKNOWN, keyw2, hash_id );

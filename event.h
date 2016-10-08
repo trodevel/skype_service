@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3198 $ $Date:: 2016-01-18 #$ $Author: serge $
+// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
 
 #ifndef EVENT_H
 #define EVENT_H
@@ -47,6 +47,7 @@ public:
         CALL_STATUS,
         CALL_PSTN_STATUS,
         CALL_FAILUREREASON,
+        VOICEMAIL_DURATION,
         CHAT,
         CHATMEMBER,
         ALTER_CALL_SET_INPUT_SOUNDCARD,

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3417 $ $Date:: 2016-02-16 #$ $Author: serge $
+// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
 
 #ifndef EVENTS_H
 #define EVENTS_H
@@ -263,6 +263,18 @@ public:
         uint32_t              par_int,
         uint32_t            hash_id ):
             BasicCallParamEvent( Event::CALL_DURATION, call_id, par_int, hash_id )
+    {
+    }
+};
+
+class VoicemailDurationEvent: public BasicCallParamEvent
+{
+public:
+    VoicemailDurationEvent(
+        uint32_t              call_id,
+        uint32_t              par_int,
+        uint32_t            hash_id ):
+            BasicCallParamEvent( Event::VOICEMAIL_DURATION, call_id, par_int, hash_id )
     {
     }
 };
