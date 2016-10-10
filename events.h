@@ -19,325 +19,281 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
+// $Revision: 4784 $ $Date:: 2016-10-10 #$ $Author: serge $
 
 #ifndef EVENTS_H
 #define EVENTS_H
 
 #include <string>                   // std::string
 
-#include "event.h"                  // Event
 #include "parser_types.h"           // user_status_e, conn_status_e, call_status_e
 
 #include "namespace_lib.h"          // NAMESPACE_SKYPE_SERVICE_START
 
 NAMESPACE_SKYPE_SERVICE_START
 
-class EventDataStr
+struct Event
 {
-public:
-    EventDataStr(
-        const std::string   & par_str ):
-            par_str_( par_str )
+    Event( uint32_t            hash_id ):
+        hash_id_( hash_id )
     {
     }
 
-    const std::string& get_par_str() const
-    {
-        return par_str_;
-    }
+    virtual ~Event() {}
 
-private:
-    std::string     par_str_;
+    uint32_t        hash_id_;
 };
 
-class EventDataInt
+struct UnknownEvent: public Event
 {
-public:
-    EventDataInt(
-        uint32_t              par_int ):
-            par_int_( par_int )
-    {
-    }
-
-    uint32_t get_par_int() const
-    {
-        return par_int_;
-    }
-
-private:
-    uint32_t          par_int_;
-};
-
-
-
-
-class BasicCallEvent: public Event
-{
-public:
-    BasicCallEvent();
-
-    BasicCallEvent(
-        Event::type_e       type,
-        uint32_t              call_id,
+    UnknownEvent(
+        const std::string   & descr,
         uint32_t            hash_id ):
-            Event( type, hash_id ),
+            Event( hash_id ),
+            descr_( descr )
+    {
+    }
+
+    std::string         descr_;
+};
+
+struct BasicCallEvent: public Event
+{
+    BasicCallEvent(
+        uint32_t            call_id,
+        uint32_t            hash_id ):
+            Event( hash_id ),
             call_id_( call_id )
     {
     }
 
-    uint32_t get_call_id() const
-    {
-        return call_id_;
-    }
-
-private:
-
     uint32_t          call_id_;
 };
 
-class BasicCallParamEvent: public BasicCallEvent, public EventDataInt
+struct ErrorEvent: public Event
 {
-public:
-    BasicCallParamEvent(
-        Event::type_e       type,
-        uint32_t              call_id,
-        uint32_t              par_int,
-        uint32_t            hash_id ):
-            BasicCallEvent( type, call_id, hash_id ),
-            EventDataInt( par_int )
-    {
-    }
-};
-
-class BasicCallParamStrEvent: public BasicCallEvent, public EventDataStr
-{
-public:
-    BasicCallParamStrEvent(
-        Event::type_e       type,
-        uint32_t              call_id,
-        const std::string   & par_str,
-        uint32_t            hash_id ):
-            BasicCallEvent( type, call_id, hash_id ),
-            EventDataStr( par_str )
-    {
-    }
-};
-
-
-
-class BasicParamEvent: public Event, public EventDataInt
-{
-public:
-    BasicParamEvent(
-        Event::type_e       type,
-        uint32_t              par_int,
-        uint32_t            hash_id ):
-            Event( type, hash_id ),
-            EventDataInt( par_int )
-    {
-    }
-};
-
-
-
-class BasicParamStrEvent: public Event, public EventDataStr
-{
-public:
-    BasicParamStrEvent(
-        Event::type_e       type,
-        const std::string   & par_str,
-        uint32_t            hash_id ):
-            Event( type, hash_id ),
-            EventDataStr( par_str )
-    {
-    }
-};
-
-class ErrorEvent: public BasicParamEvent, public EventDataStr
-{
-public:
     ErrorEvent(
-        uint32_t              par_int,
-        const std::string   & par_str,
+        uint32_t            error_code,
+        const std::string   & descr,
         uint32_t            hash_id ):
-            BasicParamEvent( Event::ERROR, par_int, hash_id ),
-            EventDataStr( par_str )
+            Event( hash_id ),
+            error_code_( error_code ),
+            descr_( descr )
     {
     }
+
+    uint32_t            error_code_;
+    std::string         descr_;
 };
 
-
-class ConnStatusEvent: public Event
+struct ConnStatusEvent: public Event
 {
-public:
     ConnStatusEvent(
         conn_status_e       conn_s,
         uint32_t            hash_id ):
-        Event( Event::CONNSTATUS, hash_id ),
+        Event( hash_id ),
         conn_s_( conn_s )
     {
     }
 
-    conn_status_e get_conn_s() const
-    {
-        return conn_s_;
-    }
-
-private:
-
     conn_status_e   conn_s_;
 };
 
-class UserStatusEvent: public Event
+struct UserStatusEvent: public Event
 {
-public:
     UserStatusEvent(
         user_status_e       user_s,
         uint32_t            hash_id ):
-        Event( Event::USERSTATUS, hash_id ),
+        Event( hash_id ),
         user_s_( user_s )
     {
     }
 
-    user_status_e get_user_s() const
-    {
-        return user_s_;
-    }
-
-private:
-
-private:
     user_status_e   user_s_;
 };
 
-class CurrentUserHandleEvent: public BasicParamStrEvent
+struct CurrentUserHandleEvent: public Event
 {
-public:
     CurrentUserHandleEvent(
-        const std::string   & par_str,
+        const std::string   & user_handle,
         uint32_t            hash_id ):
-            BasicParamStrEvent( Event::CURRENTUSERHANDLE, par_str, hash_id )
+            Event( hash_id ),
+            user_handle_( user_handle )
     {
     }
 
+    std::string     user_handle_;
+
 };
 
-class UserOnlineStatusEvent: public BasicParamStrEvent
+struct UserOnlineStatusEvent: public Event
 {
-public:
     UserOnlineStatusEvent(
-        const std::string   & par_str,
+        const std::string   & user_handle,
         user_status_e       user_s,
         uint32_t            hash_id):
-            BasicParamStrEvent( Event::USER_ONLINE_STATUS, par_str, hash_id ),
+            Event( hash_id ),
+            user_handle_( user_handle ),
             user_s_( user_s )
     {
     }
 
-    user_status_e get_user_s() const
-    {
-        return user_s_;
-    }
-private:
+    std::string     user_handle_;
     user_status_e   user_s_;
 };
 
-class CallEvent: public BasicCallEvent
+struct CallEvent: public BasicCallEvent
 {
-public:
-
     CallEvent(
-        uint32_t              call_id,
+        uint32_t            call_id,
         uint32_t            hash_id ):
-            BasicCallEvent( Event::CALL, call_id, hash_id )
+            BasicCallEvent( call_id, hash_id )
     {
     }
 };
 
-class CallDurationEvent: public BasicCallParamEvent
+struct CallDurationEvent: public BasicCallEvent
 {
-public:
     CallDurationEvent(
-        uint32_t              call_id,
-        uint32_t              par_int,
+        uint32_t            call_id,
+        uint32_t            duration,
         uint32_t            hash_id ):
-            BasicCallParamEvent( Event::CALL_DURATION, call_id, par_int, hash_id )
+            BasicCallEvent( call_id, hash_id ),
+            duration_( duration )
     {
     }
+
+    uint32_t            duration_;
 };
 
-class VoicemailDurationEvent: public BasicCallParamEvent
+struct VoicemailDurationEvent: public BasicCallEvent
 {
-public:
     VoicemailDurationEvent(
-        uint32_t              call_id,
-        uint32_t              par_int,
+        uint32_t            call_id,
+        uint32_t            duration,
         uint32_t            hash_id ):
-            BasicCallParamEvent( Event::VOICEMAIL_DURATION, call_id, par_int, hash_id )
+            BasicCallEvent( call_id, hash_id ),
+            duration_( duration )
     {
     }
+
+    uint32_t            duration_;
 };
 
-class CallStatusEvent: public BasicCallEvent
+struct CallStatusEvent: public BasicCallEvent
 {
-public:
     CallStatusEvent(
-        uint32_t              call_id,
+        uint32_t            call_id,
         call_status_e       call_s,
         uint32_t            hash_id ):
-            BasicCallEvent( Event::CALL_STATUS, call_id, hash_id ),
+            BasicCallEvent( call_id, hash_id ),
             call_s_( call_s )
     {
     }
 
-    call_status_e get_call_s() const
-    {
-        return call_s_;
-    }
-
-
-private:
     call_status_e   call_s_;
 };
 
-class CallPstnStatusEvent: public BasicCallParamEvent, public EventDataStr
+struct CallPstnStatusEvent: public BasicCallEvent
 {
-public:
     CallPstnStatusEvent(
-        uint32_t              call_id,
-        uint32_t              errorcode,
+        uint32_t            call_id,
+        uint32_t            error_code,
         const std::string   & descr,
         uint32_t            hash_id ):
-            BasicCallParamEvent( Event::CALL_PSTN_STATUS, call_id, errorcode, hash_id ),
-            EventDataStr( descr )
+            BasicCallEvent( call_id, hash_id ),
+            error_code_( error_code ),
+            descr_( descr )
     {
     }
+
+    uint32_t            error_code_;
+    std::string         descr_;
 };
 
-class CallFailureReasonEvent: public BasicCallParamEvent
+struct CallFailureReasonEvent: public BasicCallEvent
 {
-public:
     CallFailureReasonEvent(
-            uint32_t              call_id,
-            uint32_t              par_int,
+            uint32_t            call_id,
+            uint32_t            reason,
             uint32_t            hash_id ):
-                BasicCallParamEvent( Event::CALL_FAILUREREASON, call_id, par_int, hash_id )
+                BasicCallEvent( call_id, hash_id ),
+                reason_( reason )
+    {
+    }
+
+    uint32_t            reason_;
+};
+
+struct CallVaaInputStatusEvent: public BasicCallEvent
+{
+    CallVaaInputStatusEvent(
+            uint32_t            call_id,
+            uint32_t            status,
+            uint32_t            hash_id ):
+                BasicCallEvent( call_id, hash_id ),
+                status_( status )
+    {
+    }
+
+    uint32_t            status_;
+};
+
+struct AlterCallSetInputFileEvent: public BasicCallEvent
+{
+    AlterCallSetInputFileEvent(
+            uint32_t            call_id,
+            const std::string   & filename,
+            uint32_t            hash_id ):
+                BasicCallEvent( call_id, hash_id ),
+                filename_( filename )
+    {
+    }
+
+    std::string     filename_;
+};
+
+struct AlterCallSetOutputFileEvent: public BasicCallEvent
+{
+    AlterCallSetOutputFileEvent(
+            uint32_t            call_id,
+            const std::string   & filename,
+            uint32_t            hash_id ):
+                BasicCallEvent( call_id, hash_id ),
+                filename_( filename )
+    {
+    }
+
+    std::string     filename_;
+};
+
+struct ChatEvent: public Event
+{
+    ChatEvent(
+        uint32_t            hash_id ):
+            Event( hash_id )
     {
     }
 };
 
-class CallVaaInputStatusEvent: public BasicCallParamEvent
+struct ChatMemberEvent: public Event
 {
-public:
-    CallVaaInputStatusEvent(
-            uint32_t              call_id,
-            uint32_t              par_int,
-            uint32_t            hash_id ):
-                BasicCallParamEvent( Event::CALL_VAA_INPUT_STATUS, call_id, par_int, hash_id )
+    ChatMemberEvent(
+        uint32_t            hash_id ):
+            Event( hash_id )
     {
     }
 };
+
+struct UserEvent: public Event
+{
+    UserEvent(
+        uint32_t            hash_id ):
+            Event( hash_id )
+    {
+    }
+};
+
 
 NAMESPACE_SKYPE_SERVICE_END
 

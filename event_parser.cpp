@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
+// $Revision: 4785 $ $Date:: 2016-10-10 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -119,13 +119,13 @@ void EventParser::get_keyw_and_command_id( std::vector< std::string > & toks, st
 
 Event* EventParser::create_unknown( const std::string & s, uint32_t hash_id )
 {
-    return new Event( Event::UNKNOWN, hash_id );
+    return new UnknownEvent( s, hash_id );
 }
 
 Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, const std::string & s )
 {
     if( toks.empty() )
-        return new Event( Event::UNKNOWN, 0 );
+        return new UnknownEvent( s, 0 );
 
     std::string keyw;
     uint32_t hash_id;
@@ -275,7 +275,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
         return new CallFailureReasonEvent( call_id, c, hash_id );
     }
 
-    return new BasicParamStrEvent( Event::UNKNOWN, keyw2, hash_id );
+    return new UnknownEvent( keyw2, hash_id );
 }
 
 Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, uint32_t hash_id )
@@ -300,7 +300,7 @@ Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, u
         return new VoicemailDurationEvent( call_id, dur, hash_id );
     }
 
-    return new BasicParamStrEvent( Event::UNKNOWN, keyw2, hash_id );
+    return new UnknownEvent( keyw2, hash_id );
 }
 
 Event* EventParser::handle_error( const std::vector< std::string > & toks, uint32_t hash_id )
@@ -340,11 +340,12 @@ Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, 
             throw WrongFormat( "badly formed parameters - " + toks[4] );
 
         if( pars[0] == KEYW_FILE )
-            return new BasicCallParamStrEvent( is_input?
-                    Event::ALTER_CALL_SET_INPUT_FILE :
-                    Event::ALTER_CALL_SET_OUTPUT_FILE,
-                    call_id, pars[1],
-                    hash_id );
+        {
+            if( is_input )
+                return new AlterCallSetInputFileEvent( call_id, pars[1], hash_id );
+            else
+                return new AlterCallSetOutputFileEvent( call_id, pars[1], hash_id );
+        }
     }
 
     return create_unknown( toks[3], hash_id );
@@ -352,17 +353,17 @@ Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, 
 
 Event* EventParser::handle_chat( const std::vector< std::string > & toks, uint32_t hash_id )
 {
-    return new Event( Event::CHAT, hash_id );
+    return new ChatEvent( hash_id );
 }
 
 Event* EventParser::handle_chatmember( const std::vector< std::string > & toks, uint32_t hash_id )
 {
-    return new Event( Event::CHATMEMBER, hash_id );
+    return new ChatMemberEvent( hash_id );
 }
 
 Event* EventParser::handle_user( const std::vector< std::string > & toks, uint32_t hash_id )
 {
-    return new Event( Event::USER, hash_id );
+    return new UserEvent( hash_id );
 }
 
 NAMESPACE_SKYPE_SERVICE_END

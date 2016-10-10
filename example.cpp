@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3198 $ $Date:: 2016-01-18 #$ $Author: serge $
+// $Revision: 4787 $ $Date:: 2016-10-10 #$ $Author: serge $
 
 #include <thread>           // std::thread
 #include <functional>       // std::bind
@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "../utils/dummy_logger.h"      // dummy_log_set_log_level
 #include "skype_service.h"  // SkypeService
-#include "event.h"          // Event
+#include "events.h"         // Event
 
 class Callback: virtual public skype_service::ICallback
 {
@@ -41,10 +41,10 @@ public:
     // callback interface
     virtual void consume( const skype_service::Event * e )
     {
-        std::cout << "got event " << e->get_type();
+        std::cout << "got event " << typeid( *e ).name();
 
-        if( e->has_hash_id() )
-            std::cout << " #" << e->get_hash_id();
+        if( e->hash_id_ )
+            std::cout << " #" << e->hash_id_;
 
         std::cout << std::endl;
 

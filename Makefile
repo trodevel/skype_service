@@ -67,7 +67,6 @@ EXE=
 
 SRCC = \
 		command_gen.cpp \
-		event.cpp \
 		event_gen.cpp \
 		event_parser.cpp \
 		parser_types.cpp \

@@ -19,36 +19,44 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 4782 $ $Date:: 2016-10-10 #$ $Author: serge $
 
-#include "event.h"                  // self
+#ifndef EVENT_TYPE_H
+#define EVENT_TYPE_H
+
+#include <cstdint>                  // uint32_t
 
 #include "namespace_lib.h"          // NAMESPACE_SKYPE_SERVICE_START
 
 NAMESPACE_SKYPE_SERVICE_START
 
-Event::Event(
-    Event::type_e       type,
-    uint32_t            hash_id ):
-    type_( type ),
-    hash_id_( hash_id )
+enum event_type_e
 {
-}
-
-Event::type_e Event::get_type() const
-{
-    return type_;
-}
-
-uint32_t Event::get_hash_id() const
-{
-    return hash_id_;
-}
-
-bool Event::has_hash_id() const
-{
-    return hash_id_ != 0;
-}
+    UNDEF = 0,
+    UNKNOWN,
+    ERROR,
+    CONNSTATUS,
+    USERSTATUS,
+    CURRENTUSERHANDLE,
+    USER_ONLINE_STATUS,
+    CALL,
+    CALL_DURATION,
+    CALL_STATUS,
+    CALL_PSTN_STATUS,
+    CALL_FAILUREREASON,
+    VOICEMAIL_DURATION,
+    CHAT,
+    CHATMEMBER,
+    ALTER_CALL_SET_INPUT_SOUNDCARD,
+    ALTER_CALL_SET_INPUT_PORT,
+    ALTER_CALL_SET_INPUT_FILE,
+    ALTER_CALL_SET_OUTPUT_SOUNDCARD,
+    ALTER_CALL_SET_OUTPUT_PORT,
+    ALTER_CALL_SET_OUTPUT_FILE,
+    CALL_VAA_INPUT_STATUS,
+    USER
+};
 
 NAMESPACE_SKYPE_SERVICE_END
 
+#endif  // EVENT_TYPE_H

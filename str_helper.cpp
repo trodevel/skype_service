@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3198 $ $Date:: 2016-01-18 #$ $Author: serge $
+// $Revision: 4786 $ $Date:: 2016-10-10 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -109,34 +109,34 @@ std::string to_string( call_status_e l )
     return m[l];
 }
 
-const std::string & StrHelper::to_string( Event::type_e l )
+const std::string & StrHelper::to_string( event_type_e l )
 {
-    typedef std::map< Event::type_e, std::string > Map;
+    typedef std::map< event_type_e, std::string > Map;
     static Map m;
     if( m.empty() )
     {
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( UNDEF ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( UNKNOWN ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ERROR ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CONNSTATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( USERSTATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CURRENTUSERHANDLE ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( USER_ONLINE_STATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_DURATION ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_STATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_PSTN_STATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_FAILUREREASON ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CHAT ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CHATMEMBER ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_SOUNDCARD ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_PORT ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_FILE ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_SOUNDCARD ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_PORT ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_FILE ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( CALL_VAA_INPUT_STATUS ) );
-        MAP_INSERT_VAL( m, Event::type_e:: TUPLE_VAL_STR( USER ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( UNDEF ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( UNKNOWN ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ERROR ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CONNSTATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USERSTATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CURRENTUSERHANDLE ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USER_ONLINE_STATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_DURATION ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_STATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_PSTN_STATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_FAILUREREASON ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CHAT ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CHATMEMBER ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_SOUNDCARD ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_PORT ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_FILE ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_SOUNDCARD ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_PORT ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_FILE ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_VAA_INPUT_STATUS ) );
+        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USER ) );
     }
 
     static const std::string q( "?" );

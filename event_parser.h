@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4744 $ $Date:: 2016-10-08 #$ $Author: serge $
+// $Revision: 4778 $ $Date:: 2016-10-10 #$ $Author: serge $
 
 #ifndef EVENT_PARSER_H
 #define EVENT_PARSER_H
