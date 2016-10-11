@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4787 $ $Date:: 2016-10-10 #$ $Author: serge $
+// $Revision: 4805 $ $Date:: 2016-10-11 #$ $Author: serge $
 
 #include <thread>           // std::thread
 #include <functional>       // std::bind
@@ -43,8 +43,8 @@ public:
     {
         std::cout << "got event " << typeid( *e ).name();
 
-        if( e->hash_id_ )
-            std::cout << " #" << e->hash_id_;
+        if( e->req_id )
+            std::cout << " #" << e->req_id;
 
         std::cout << std::endl;
 

@@ -19,10 +19,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4786 $ $Date:: 2016-10-10 #$ $Author: serge $
+// $Revision: 4802 $ $Date:: 2016-10-11 #$ $Author: serge $
 
 #include "parser_types.h"           // conn_status_e, user_status_e, call_status_e
-#include "event_type.h"             // event_type_e
 
 #include "namespace_lib.h"          // NAMESPACE_SKYPE_SERVICE_START
 
@@ -31,11 +30,10 @@ NAMESPACE_SKYPE_SERVICE_START
 class StrHelper
 {
 public:
-    static std::string to_string( conn_status_e l );
-    static std::string to_string( user_status_e l );
-    static const std::string & to_string( event_type_e l );
+    static const std::string & to_string( conn_status_e l );
+    static const std::string & to_string( user_status_e l );
 };
 
-std::string to_string( call_status_e l );
+const std::string & to_string( call_status_e l );
 
 NAMESPACE_SKYPE_SERVICE_END

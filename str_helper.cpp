@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4786 $ $Date:: 2016-10-10 #$ $Author: serge $
+// $Revision: 4802 $ $Date:: 2016-10-11 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -32,7 +32,7 @@ NAMESPACE_SKYPE_SERVICE_START
 
 #define MAP_INSERT_VAL( _m, _val )      _m.insert( Map::value_type( _val ) )
 
-std::string StrHelper::to_string( conn_status_e l )
+const std::string & StrHelper::to_string( conn_status_e l )
 {
     typedef std::map< conn_status_e, std::string > Map;
     static Map m;
@@ -45,13 +45,15 @@ std::string StrHelper::to_string( conn_status_e l )
         MAP_INSERT_VAL( m, conn_status_e:: TUPLE_VAL_STR( NA ) );
     }
 
+    static const std::string undef( "?" );
+
     if( 0 == m.count( l ) )
-        return "?";
+        return undef;
 
     return m[l];
 }
 
-std::string StrHelper::to_string( user_status_e l )
+const std::string & StrHelper::to_string( user_status_e l )
 {
     typedef std::map< user_status_e, std::string > Map;
     static Map m;
@@ -66,13 +68,15 @@ std::string StrHelper::to_string( user_status_e l )
         MAP_INSERT_VAL( m, user_status_e:: TUPLE_VAL_STR( NA ) );
     }
 
+    static const std::string undef( "?" );
+
     if( 0 == m.count( l ) )
-        return "?";
+        return undef;
 
     return m[l];
 }
 
-std::string to_string( call_status_e l )
+const std::string & to_string( call_status_e l )
 {
     typedef std::map< call_status_e, std::string > Map;
     static Map m;
@@ -103,45 +107,10 @@ std::string to_string( call_status_e l )
         MAP_INSERT_VAL( m, call_status_e:: TUPLE_VAL_STR( REDIAL_PENDING ) );
     }
 
+    static const std::string undef( "?" );
+
     if( 0 == m.count( l ) )
-        return "?";
-
-    return m[l];
-}
-
-const std::string & StrHelper::to_string( event_type_e l )
-{
-    typedef std::map< event_type_e, std::string > Map;
-    static Map m;
-    if( m.empty() )
-    {
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( UNDEF ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( UNKNOWN ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ERROR ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CONNSTATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USERSTATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CURRENTUSERHANDLE ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USER_ONLINE_STATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_DURATION ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_STATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_PSTN_STATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_FAILUREREASON ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CHAT ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CHATMEMBER ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_SOUNDCARD ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_PORT ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_INPUT_FILE ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_SOUNDCARD ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_PORT ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( ALTER_CALL_SET_OUTPUT_FILE ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( CALL_VAA_INPUT_STATUS ) );
-        MAP_INSERT_VAL( m, event_type_e:: TUPLE_VAL_STR( USER ) );
-    }
-
-    static const std::string q( "?" );
-    if( 0 == m.count( l ) )
-        return q;
+        return undef;
 
     return m[l];
 }
