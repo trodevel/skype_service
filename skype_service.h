@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3444 $ $Date:: 2016-02-23 #$ $Author: serge $
+// $Revision: 4810 $ $Date:: 2016-10-11 #$ $Author: serge $
 
 #ifndef SKYPE_SERVICE_H
 #define SKYPE_SERVICE_H
@@ -56,18 +56,18 @@ public:
     bool send_raw( const std::string & s );
 
     // Skype interface
-    bool call( const std::string & s, uint32_t hash_id = 0 );
-    bool get_call_property( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
-    bool set_call_status( uint32_t id, call_status_e s, uint32_t hash_id = 0 );
-    bool alter_call_hangup( uint32_t id, uint32_t hash_id = 0 );
-    bool alter_call_set_input_soundcard( uint32_t id, uint32_t hash_id = 0 );
-    bool alter_call_set_input_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
-    bool alter_call_set_input_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
-    bool alter_call_set_output_soundcard( uint32_t id, uint32_t hash_id = 0 );
-    bool alter_call_set_output_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
-    bool alter_call_set_output_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
-    bool alter_call_set_capture_mic_port( uint32_t id, uint32_t p, uint32_t hash_id = 0 );
-    bool alter_call_set_capture_mic_file( uint32_t id, const std::string & s, uint32_t hash_id = 0 );
+    bool call( const std::string & s, uint32_t req_id = 0 );
+    bool get_call_property( uint32_t id, const std::string & s, uint32_t req_id = 0 );
+    bool set_call_status( uint32_t id, call_status_e s, uint32_t req_id = 0 );
+    bool alter_call_hangup( uint32_t id, uint32_t req_id = 0 );
+    bool alter_call_set_input_soundcard( uint32_t id, uint32_t req_id = 0 );
+    bool alter_call_set_input_port( uint32_t id, uint32_t p, uint32_t req_id = 0 );
+    bool alter_call_set_input_file( uint32_t id, const std::string & s, uint32_t req_id = 0 );
+    bool alter_call_set_output_soundcard( uint32_t id, uint32_t req_id = 0 );
+    bool alter_call_set_output_port( uint32_t id, uint32_t p, uint32_t req_id = 0 );
+    bool alter_call_set_output_file( uint32_t id, const std::string & s, uint32_t req_id = 0 );
+    bool alter_call_set_capture_mic_port( uint32_t id, uint32_t p, uint32_t req_id = 0 );
+    bool alter_call_set_capture_mic_file( uint32_t id, const std::string & s, uint32_t req_id = 0 );
 
     std::string get_error_msg() const;
 

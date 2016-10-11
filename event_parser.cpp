@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4785 $ $Date:: 2016-10-10 #$ $Author: serge $
+// $Revision: 4813 $ $Date:: 2016-10-11 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -117,9 +117,9 @@ void EventParser::get_keyw_and_command_id( std::vector< std::string > & toks, st
     keyw    = toks[0];
 }
 
-Event* EventParser::create_unknown( const std::string & s, uint32_t hash_id )
+Event* EventParser::create_unknown( const std::string & s, uint32_t req_id )
 {
-    return new UnknownEvent( s, hash_id );
+    return new UnknownEvent( s, req_id );
 }
 
 Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, const std::string & s )
@@ -128,88 +128,88 @@ Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, 
         return new UnknownEvent( s, 0 );
 
     std::string keyw;
-    uint32_t hash_id;
-    get_keyw_and_command_id( toks, keyw, hash_id );
+    uint32_t req_id;
+    get_keyw_and_command_id( toks, keyw, req_id );
 
     if( keyw == KEYW_CONNSTATUS )
     {
-        return handle_connstatus( toks, hash_id );
+        return handle_connstatus( toks, req_id );
     }
     else if( keyw == KEYW_USERSTATUS )
     {
-        return handle_userstatus( toks, hash_id );
+        return handle_userstatus( toks, req_id );
     }
     else if( keyw == KEYW_CURRENTUSERHANDLE )
     {
-        return handle_currentuserhandle( toks, hash_id );
+        return handle_currentuserhandle( toks, req_id );
     }
     else if( keyw == KEYW_CALL )
     {
-        return handle_call( toks, hash_id );
+        return handle_call( toks, req_id );
     }
     else if( keyw == KEYW_VOICEMAIL )
     {
-        return handle_voicemail( toks, hash_id );
+        return handle_voicemail( toks, req_id );
     }
     else if( keyw == KEYW_ERROR )
     {
-        return handle_error( toks, hash_id );
+        return handle_error( toks, req_id );
     }
     else if( keyw == KEYW_CHAT )
     {
-        return handle_chat( toks, hash_id );
+        return handle_chat( toks, req_id );
     }
     else if( keyw == KEYW_CHATMEMBER )
     {
-        return handle_chatmember( toks, hash_id );
+        return handle_chatmember( toks, req_id );
     }
     else if( keyw == KEYW_USER )
     {
-        return handle_user( toks, hash_id );
+        return handle_user( toks, req_id );
     }
     else if( keyw == KEYW_ALTER )
     {
         if( toks.size() < 2 )
-            return create_unknown( s, hash_id );
+            return create_unknown( s, req_id );
 
         if( toks[1] != KEYW_CALL )
-            return create_unknown( s, hash_id );
+            return create_unknown( s, req_id );
 
-        return handle_alter_call( toks, hash_id );
+        return handle_alter_call( toks, req_id );
     }
 
-    return create_unknown( s, hash_id );
+    return create_unknown( s, req_id );
 
 }
 
-Event* EventParser::handle_connstatus( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_connstatus( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
     conn_status_e c = to_conn_status( toks[1] );
 
-    return new ConnStatusEvent( c, hash_id );
+    return new ConnStatusEvent( c, req_id );
 }
-Event* EventParser::handle_userstatus( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_userstatus( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
     user_status_e c = to_user_status( toks[1] );
 
-    return new UserStatusEvent( c, hash_id );
+    return new UserStatusEvent( c, req_id );
 }
-Event* EventParser::handle_currentuserhandle( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_currentuserhandle( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
     const std::string & s = toks[1];
 
-    return new CurrentUserHandleEvent( s, hash_id );
+    return new CurrentUserHandleEvent( s, req_id );
 }
-Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() < 4 )
         throw WrongFormat( "expected at least 4 token(s)" );
@@ -228,7 +228,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
 
         uint32_t dur = std::stoul( toks[3] );
 
-        return new CallDurationEvent( call_id, dur, hash_id );
+        return new CallDurationEvent( call_id, dur, req_id );
     }
     else if( keyw2 == KEYW_STATUS )
     {
@@ -237,7 +237,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
 
         call_status_e s = to_call_status( toks[3] );
 
-        return new CallStatusEvent( call_id, s, hash_id );
+        return new CallStatusEvent( call_id, s, req_id );
     }
     else if( keyw2 == KEYW_PSTN_STATUS )
     {
@@ -250,7 +250,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
 
         join_tokens( descr, toks, 4 );
 
-        return new CallPstnStatusEvent( call_id, error, descr, hash_id );
+        return new CallPstnStatusEvent( call_id, error, descr, req_id );
     }
     else if( keyw2 == KEYW_VAA_INPUT_STATUS )
     {
@@ -263,7 +263,7 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
 
         uint32_t s = ( toks[3] == KEYW_TRUE ) ? 1 : 0;
 
-        return new CallVaaInputStatusEvent( call_id, s, hash_id );
+        return new CallVaaInputStatusEvent( call_id, s, req_id );
     }
     else if( keyw2 == KEYW_FAILUREREASON )
     {
@@ -272,13 +272,13 @@ Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32
 
         uint32_t c = std::stoul( toks[3] );
 
-        return new CallFailureReasonEvent( call_id, c, hash_id );
+        return new CallFailureReasonEvent( call_id, c, req_id );
     }
 
-    return new UnknownEvent( keyw2, hash_id );
+    return new UnknownEvent( keyw2, req_id );
 }
 
-Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() < 3 )
         throw WrongFormat( "expected at least 3 token(s)" );
@@ -297,13 +297,13 @@ Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, u
 
         uint32_t dur = std::stoul( toks[3] );
 
-        return new VoicemailDurationEvent( call_id, dur, hash_id );
+        return new VoicemailDurationEvent( call_id, dur, req_id );
     }
 
-    return new UnknownEvent( keyw2, hash_id );
+    return new UnknownEvent( toks[0] + " " + keyw2, req_id );
 }
 
-Event* EventParser::handle_error( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_error( const std::vector< std::string > & toks, uint32_t req_id )
 {
     if( toks.size() < 2 )
         throw WrongFormat( "expected at least 2 token(s)" );
@@ -314,10 +314,10 @@ Event* EventParser::handle_error( const std::vector< std::string > & toks, uint3
 
     join_tokens( descr, toks, 2 );
 
-    return new ErrorEvent( error, descr, hash_id );
+    return new ErrorEvent( error, descr, req_id );
 }
 
-Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, uint32_t req_id )
 {
     // ALTER CALL 846 SET_INPUT file="c:\test.wav"
 
@@ -342,28 +342,28 @@ Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, 
         if( pars[0] == KEYW_FILE )
         {
             if( is_input )
-                return new AlterCallSetInputFileEvent( call_id, pars[1], hash_id );
+                return new AlterCallSetInputFileEvent( call_id, pars[1], req_id );
             else
-                return new AlterCallSetOutputFileEvent( call_id, pars[1], hash_id );
+                return new AlterCallSetOutputFileEvent( call_id, pars[1], req_id );
         }
     }
 
-    return create_unknown( toks[3], hash_id );
+    return create_unknown( toks[3], req_id );
 }
 
-Event* EventParser::handle_chat( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_chat( const std::vector< std::string > & toks, uint32_t req_id )
 {
-    return new ChatEvent( hash_id );
+    return new ChatEvent( req_id );
 }
 
-Event* EventParser::handle_chatmember( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_chatmember( const std::vector< std::string > & toks, uint32_t req_id )
 {
-    return new ChatMemberEvent( hash_id );
+    return new ChatMemberEvent( req_id );
 }
 
-Event* EventParser::handle_user( const std::vector< std::string > & toks, uint32_t hash_id )
+Event* EventParser::handle_user( const std::vector< std::string > & toks, uint32_t req_id )
 {
-    return new UserEvent( hash_id );
+    return new UserEvent( req_id );
 }
 
 NAMESPACE_SKYPE_SERVICE_END
