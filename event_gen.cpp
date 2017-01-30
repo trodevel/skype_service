@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 1801 $ $Date:: 2015-06-01 #$ $Author: serge $
+// $Revision: 5620 $ $Date:: 2017-01-24 #$ $Author: serge $
 
 #include "event_gen.h"              // self
 
@@ -56,7 +56,7 @@ bool EventGen::register_callback( skype_service::ICallback * callback )
 
 void EventGen::handle( const std::string & s )
 {
-    std::cout << "EventGen::handle: " << s << std::endl;
+//    std::cout << "EventGen::handle: " << s << std::endl;
 
     Event *ev = EventParser::to_event( s );
 
