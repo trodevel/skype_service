@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4819 $ $Date:: 2016-10-13 #$ $Author: serge $
+// $Revision: 6027 $ $Date:: 2017-03-14 #$ $Author: serge $
 
 #include "event_parser.h"       // self
 
@@ -53,11 +53,12 @@ NAMESPACE_SKYPE_SERVICE_START
 
 Event* EventParser::to_event( const std::string & s )
 {
-    std::vector< std::string > toks;
+    Tokenized toks;
 
-    tokenize_to_vector( toks, s, " " );
+    toks.str    = s;
+    tokenize_to_vector( toks.tokens, s, " " );
 
-    return handle_tokens( toks, s );
+    return handle_tokens( toks );
 }
 
 std::string & join_tokens( std::string & res, const std::vector< std::string > & toks, int start_position )
@@ -84,11 +85,11 @@ std::string & join_tokens( std::string & res, const std::vector< std::string > &
 /**
  * @param s original string
  */
-Event* EventParser::handle_tokens( std::vector< std::string > & toks, const std::string & s )
+Event* EventParser::handle_tokens( Tokenized & toks )
 {
     try
     {
-        return handle_tokens__throwing( toks, s );
+        return handle_tokens__throwing( toks );
     }
     catch( std::exception &e )
     {
@@ -98,34 +99,34 @@ Event* EventParser::handle_tokens( std::vector< std::string > & toks, const std:
     return nullptr;
 }
 
-void EventParser::get_keyw_and_command_id( std::vector< std::string > & toks, std::string & keyw, uint32_t & id )
+void EventParser::get_keyw_and_command_id( Tokenized & tok, std::string & keyw, uint32_t & id )
 {
     id  = 0;
 
-    if( toks[0].empty() )
+    if( tok.tokens[0].empty() )
         return;
 
-    if( toks[0][0] == '#' )
+    if( tok.tokens[0][0] == '#' )
     {
-        id = std::stoi( toks[0].substr( 1 ) );
-        toks.erase( toks.begin() );
+        id = std::stoi( tok.tokens[0].substr( 1 ) );
+        tok.tokens.erase( tok.tokens.begin() );
     }
 
-    if( toks.empty() )
+    if( tok.tokens.empty() )
         return;
 
-    keyw    = toks[0];
+    keyw    = tok.tokens[0];
 }
 
-Event* EventParser::create_unknown( const std::string & s, uint32_t req_id )
+Event* EventParser::create_unknown( const std::string & keyw, const Tokenized & toks, uint32_t req_id )
 {
-    return new UnknownEvent( s, req_id );
+    return new UnknownEvent( keyw + ": " + toks.str, req_id );
 }
 
-Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, const std::string & s )
+Event* EventParser::handle_tokens__throwing( Tokenized & toks )
 {
-    if( toks.empty() )
-        return new UnknownEvent( s, 0 );
+    if( toks.tokens.empty() )
+        return new UnknownEvent( toks.str, 0 );
 
     std::string keyw;
     uint32_t req_id;
@@ -169,175 +170,175 @@ Event* EventParser::handle_tokens__throwing( std::vector< std::string > & toks, 
     }
     else if( keyw == KEYW_ALTER )
     {
-        if( toks.size() < 2 )
-            return create_unknown( s, req_id );
+        if( toks.tokens.size() < 2 )
+            return create_unknown( "not enough tokens (<2)", toks, req_id );
 
-        if( toks[1] != KEYW_CALL )
-            return create_unknown( s, req_id );
+        if( toks.tokens[1] != KEYW_CALL )
+            return create_unknown( toks.tokens[1], toks, req_id );
 
         return handle_alter_call( toks, req_id );
     }
 
-    return create_unknown( s, req_id );
+    return create_unknown( keyw, toks, req_id );
 
 }
 
-Event* EventParser::handle_connstatus( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_connstatus( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() != 2 )
+    if( toks.tokens.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
-    conn_status_e c = to_conn_status( toks[1] );
+    conn_status_e c = to_conn_status( toks.tokens[1] );
 
     return new ConnStatusEvent( c, req_id );
 }
-Event* EventParser::handle_userstatus( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_userstatus( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() != 2 )
+    if( toks.tokens.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
-    user_status_e c = to_user_status( toks[1] );
+    user_status_e c = to_user_status( toks.tokens[1] );
 
     return new UserStatusEvent( c, req_id );
 }
-Event* EventParser::handle_currentuserhandle( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_currentuserhandle( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() != 2 )
+    if( toks.tokens.size() != 2 )
         throw WrongFormat( "expected 2 token(s)" );
 
-    const std::string & s = toks[1];
+    const std::string & s = toks.tokens[1];
 
     return new CurrentUserHandleEvent( s, req_id );
 }
-Event* EventParser::handle_call( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_call( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() < 4 )
+    if( toks.tokens.size() < 4 )
         throw WrongFormat( "expected at least 4 token(s)" );
 
-    if( toks[1].empty() )
+    if( toks.tokens[1].empty() )
         throw WrongFormat( "CALL_ID is not defined" );
 
-    uint32_t call_id = std::stoul( toks[1] );
+    uint32_t call_id = std::stoul( toks.tokens[1] );
 
-    const std::string keyw2 = toks[2];
+    const std::string keyw2 = toks.tokens[2];
 
     if( keyw2 == KEYW_DURATION )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "DURATION is empty" );
 
-        uint32_t dur = std::stoul( toks[3] );
+        uint32_t dur = std::stoul( toks.tokens[3] );
 
         return new CallDurationEvent( call_id, dur, req_id );
     }
     else if( keyw2 == KEYW_STATUS )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "STATUS is empty" );
 
-        call_status_e s = to_call_status( toks[3] );
+        call_status_e s = to_call_status( toks.tokens[3] );
 
         return new CallStatusEvent( call_id, s, req_id );
     }
     else if( keyw2 == KEYW_PSTN_STATUS )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "PSTN_STATUS is empty" );
 
-        uint32_t error = std::stoul( toks[3] );
+        uint32_t error = std::stoul( toks.tokens[3] );
 
         std::string descr;
 
-        join_tokens( descr, toks, 4 );
+        join_tokens( descr, toks.tokens, 4 );
 
         return new CallPstnStatusEvent( call_id, error, descr, req_id );
     }
     else if( keyw2 == KEYW_VAA_INPUT_STATUS )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "VAA_INPUT_STATUS is empty" );
 
 
-        if( toks[3] != KEYW_TRUE && toks[3] != KEYW_FALSE )
+        if( toks.tokens[3] != KEYW_TRUE && toks.tokens[3] != KEYW_FALSE )
             throw WrongFormat( "VAA_INPUT_STATUS should be TRUE or FALSE" );
 
-        uint32_t s = ( toks[3] == KEYW_TRUE ) ? 1 : 0;
+        uint32_t s = ( toks.tokens[3] == KEYW_TRUE ) ? 1 : 0;
 
         return new CallVaaInputStatusEvent( call_id, s, req_id );
     }
     else if( keyw2 == KEYW_FAILUREREASON )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "FAILUREREASON is empty" );
 
-        uint32_t c = std::stoul( toks[3] );
+        uint32_t c = std::stoul( toks.tokens[3] );
 
         return new CallFailureReasonEvent( call_id, c, req_id );
     }
 
-    return new UnknownEvent( keyw2, req_id );
+    return new UnknownEvent( keyw2 + ": " + toks.str, req_id );
 }
 
-Event* EventParser::handle_voicemail( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_voicemail( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() < 3 )
+    if( toks.tokens.size() < 3 )
         throw WrongFormat( "expected at least 3 token(s)" );
 
-    if( toks[1].empty() )
+    if( toks.tokens[1].empty() )
         throw WrongFormat( "CALL_ID is not defined" );
 
-    uint32_t call_id = std::stoul( toks[1] );
+    uint32_t call_id = std::stoul( toks.tokens[1] );
 
-    const std::string keyw2 = toks[2];
+    const std::string keyw2 = toks.tokens[2];
 
     if( keyw2 == KEYW_DURATION )
     {
-        if( toks[3].empty() )
+        if( toks.tokens[3].empty() )
             throw WrongFormat( "DURATION is empty" );
 
-        uint32_t dur = std::stoul( toks[3] );
+        uint32_t dur = std::stoul( toks.tokens[3] );
 
         return new VoicemailDurationEvent( call_id, dur, req_id );
     }
 
-    return new UnknownEvent( toks[0] + " " + keyw2, req_id );
+    return new UnknownEvent( keyw2 + ": " + toks.str, req_id );
 }
 
-Event* EventParser::handle_error( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_error( const Tokenized & toks, uint32_t req_id )
 {
-    if( toks.size() < 2 )
+    if( toks.tokens.size() < 2 )
         throw WrongFormat( "expected at least 2 token(s)" );
 
-    uint32_t error = std::stoul( toks[1] );
+    uint32_t error = std::stoul( toks.tokens[1] );
 
     std::string descr;
 
-    join_tokens( descr, toks, 2 );
+    join_tokens( descr, toks.tokens, 2 );
 
     return new ErrorEvent( error, descr, req_id );
 }
 
-Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_alter_call( const Tokenized & toks, uint32_t req_id )
 {
     // ALTER CALL 846 SET_INPUT file="c:\test.wav"
 
-    if( toks.size() < 5 )
+    if( toks.tokens.size() < 5 )
         throw WrongFormat( "expected at least 5 token(s)" );
 
-    if( toks[2].empty() )
+    if( toks.tokens[2].empty() )
         throw WrongFormat( "CALL_ID is not defined" );
 
-    uint32_t call_id = std::stoul( toks[2] );
+    uint32_t call_id = std::stoul( toks.tokens[2] );
 
     std::vector< std::string > pars;
-    tokenize_to_vector( pars, toks[4], "=" );
+    tokenize_to_vector( pars, toks.tokens[4], "=" );
 
-    if( toks[3] == KEYW_SET_INPUT || toks[3] == KEYW_SET_OUTPUT )
+    if( toks.tokens[3] == KEYW_SET_INPUT || toks.tokens[3] == KEYW_SET_OUTPUT )
     {
-        bool is_input = ( toks[3] == KEYW_SET_INPUT );
+        bool is_input = ( toks.tokens[3] == KEYW_SET_INPUT );
 
         if( pars.size() != 2 )
-            throw WrongFormat( "badly formed parameters - " + toks[4] );
+            throw WrongFormat( "badly formed parameters - " + toks.tokens[4] );
 
         if( pars[0] == KEYW_FILE )
         {
@@ -348,20 +349,20 @@ Event* EventParser::handle_alter_call( const std::vector< std::string > & toks, 
         }
     }
 
-    return create_unknown( toks[3], req_id );
+    return create_unknown( toks.tokens[3], toks, req_id );
 }
 
-Event* EventParser::handle_chat( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_chat( const Tokenized & toks, uint32_t req_id )
 {
     return new ChatEvent( req_id );
 }
 
-Event* EventParser::handle_chatmember( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_chatmember( const Tokenized & toks, uint32_t req_id )
 {
     return new ChatMemberEvent( req_id );
 }
 
-Event* EventParser::handle_user( const std::vector< std::string > & toks, uint32_t req_id )
+Event* EventParser::handle_user( const Tokenized & toks, uint32_t req_id )
 {
     return new UserEvent( req_id );
 }

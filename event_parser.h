@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 4819 $ $Date:: 2016-10-13 #$ $Author: serge $
+// $Revision: 6027 $ $Date:: 2017-03-14 #$ $Author: serge $
 
 #ifndef EVENT_PARSER_H
 #define EVENT_PARSER_H
@@ -36,6 +36,12 @@ class Event;
 
 class EventParser
 {
+    struct Tokenized
+    {
+        std::string                 str;
+        std::vector< std::string >  tokens;
+    };
+
 public:
     struct WrongFormat: public std::runtime_error
     {
@@ -49,23 +55,23 @@ public:
 
 private:
 
-    static Event* create_unknown( const std::string & s, uint32_t req_id );
+    static Event* create_unknown( const std::string & keyw, const Tokenized & toks, uint32_t req_id );
 
-    static Event* handle_tokens( std::vector< std::string > & toks, const std::string & s );
+    static Event* handle_tokens( Tokenized & toks );
 
-    static Event* handle_tokens__throwing( std::vector< std::string > & toks, const std::string & s );
-    static void get_keyw_and_command_id( std::vector< std::string > & toks, std::string & keyw, uint32_t & id );
+    static Event* handle_tokens__throwing( Tokenized & toks );
+    static void get_keyw_and_command_id( Tokenized & toks, std::string & keyw, uint32_t & id );
 
-    static Event* handle_connstatus( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_userstatus( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_currentuserhandle( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_error( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_call( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_voicemail( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_alter_call( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_chat( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_chatmember( const std::vector< std::string > & toks, uint32_t req_id );
-    static Event* handle_user( const std::vector< std::string > & toks, uint32_t req_id );
+    static Event* handle_connstatus( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_userstatus( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_currentuserhandle( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_error( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_call( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_voicemail( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_alter_call( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_chat( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_chatmember( const Tokenized & toks, uint32_t req_id );
+    static Event* handle_user( const Tokenized & toks, uint32_t req_id );
 };
 
 NAMESPACE_SKYPE_SERVICE_END
